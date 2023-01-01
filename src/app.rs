@@ -1,23 +1,21 @@
-use crate::reader::Reader;
-use crate::writer::Writer;
+use crate::io::IO;
 
 pub struct App {
-    reader: Box<dyn Reader>,
-    writer: Box<dyn Writer>,
+    io: Box<dyn IO>,
 }
 
 impl App {
-    pub const fn new(reader: Box<dyn Reader>, writer: Box<dyn Writer>) -> Self {
-        Self { reader, writer }
+    pub const fn new(io: Box<dyn IO>) -> Self {
+        Self { io }
     }
 
     pub fn run(&mut self) {
-        self.writer.write(String::from("Guess the number!"));
-        self.writer.write(String::from("Please input your guess: "));
+        self.io.write("Guess the number!");
+        self.io.write("Please input your guess: ");
 
-        let input = self.reader.read();
-
-        self.writer.write(String::from("selected input ") + &input)
+        let input = self.io.read();
+        let foo = String::from("selected input: ") + &*input;
+        self.io.write(foo.as_str());
     }
 }
 
