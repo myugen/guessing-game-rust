@@ -1,8 +1,8 @@
-use crate::app::App;
+use crate::game::GameEngine;
 use crate::io::StandardIO;
 use std::io::{stdin, stdout};
 
-mod app;
+mod game;
 
 mod io;
 
@@ -11,6 +11,6 @@ fn main() {
     let writer = stdout().lock();
     let io = StandardIO::new(reader, writer);
 
-    let mut app = App::new(Box::new(io));
-    app.run();
+    let mut game_engine = GameEngine::new(Box::new(io));
+    game_engine.run();
 }

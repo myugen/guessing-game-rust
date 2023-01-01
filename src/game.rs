@@ -1,10 +1,10 @@
 use crate::io::IO;
 
-pub struct App {
+pub struct GameEngine {
     io: Box<dyn IO>,
 }
 
-impl App {
+impl GameEngine {
     pub const fn new(io: Box<dyn IO>) -> Self {
         Self { io }
     }
@@ -21,8 +21,19 @@ impl App {
 
 #[cfg(test)]
 mod tests {
-    use super::App;
+    use super::GameEngine;
+    use crate::io::MockIO;
+    use mockall::predicate;
 
     #[test]
-    fn test_run_should() {}
+    fn test_run_should() {
+        let mut mock = MockIO::new();
+        mock.expect_write()
+            .times(1)
+            .with(predicate::eq("Greetings"));
+        let io = Box::new(mock);
+        let mut game_engine = GameEngine::new(io);
+
+        game_engine.run()
+    }
 }
